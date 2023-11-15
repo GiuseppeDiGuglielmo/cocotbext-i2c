@@ -1,0 +1,7 @@
+.simvision
+__pycache__
+results.xml
+waves.shm
+xrun.history
+xrun.key
+xrun.log
