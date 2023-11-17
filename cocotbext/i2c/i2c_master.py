@@ -61,16 +61,16 @@ class I2cMaster:
 
     def _set_sda(self, val):
         if self.sda_o is not None:
-            self.sda_o <= val
+            self.sda_o.value = val
         else:
-            self.sda <= val
+            self.sda.value = val
             # self.sda <= BinaryValue('z') if val else 0
 
     def _set_scl(self, val):
         if self.scl_o is not None:
-            self.scl_o <= val
+            self.scl_o.value = val
         else:
-            self.scl <= val
+            self.scl.value = val
             # self.scl <= BinaryValue('z') if val else 0
 
     async def send_start(self):
@@ -150,18 +150,18 @@ class I2cMaster:
         await self.send_start()
         ack = await self.send_byte((addr << 1) | 0)
         if ack:
-            self.log.info("Got NACK")
+            self.log.error("Got NACK")
         for b in data:
             ack = await self.send_byte(b)
             if ack:
-                self.log.info("Got NACK")
+                self.log.error("Got NACK")
 
     async def read(self, addr, count):
         self.log.info("Read %d bytes from device at I2C address 0x%02x", count, addr)
         await self.send_start()
         ack = await self.send_byte((addr << 1) | 1)
         if ack:
-            self.log.info("Got NACK")
+            self.log.error("Got NACK")
         data = bytearray()
         for k in range(count):
             data.append(await self.recv_byte(k == count-1))
