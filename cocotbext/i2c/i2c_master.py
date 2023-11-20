@@ -54,7 +54,8 @@ class I2cMaster:
             self.scl_o.setimmediatevalue(1)
 
         self.log.info("I2C master configuration:")
-        self.log.info("  Speed: %d bps", self.speed)
+        self.log.info("    speed     : {:d} bps".format(self.speed))
+        self.log.info("    SCL period: {:d} ns".format(int(1e9/self.speed)))
 
         self._bit_t = Timer(int(1e9/self.speed), 'ns')
         self._half_bit_t = Timer(int(1e9/self.speed/2), 'ns')
@@ -130,11 +131,12 @@ class I2cMaster:
         await self._bit_t
         self._set_scl(0)
         await self._half_bit_t
-
+        self.log.info("recv_bit {:b}".format(b))
         return b
 
     async def send_byte(self, b):
         for i in range(8):
+            self.log.info("send_byte [{}] {:b}".format(i, bool(b & (1 << 7-i))))
             await self.send_bit(b & (1 << 7-i))
         return await self.recv_bit()
 
@@ -146,7 +148,10 @@ class I2cMaster:
         return b
 
     async def write(self, addr, data):
-        self.log.info("Write %s to device at I2C address 0x%02x", data, addr)
+        self.log.info("I2C write")
+        self.log.info("    data 0x{:s} ({:d} byte{:s})".format(data.hex(), len(data), 's' if len(data)>1 else ''))
+        self.log.info("    device address 0x{:02x} ({:d}, {:b})".format(addr, addr, addr))
+
         await self.send_start()
         ack = await self.send_byte((addr << 1) | 0)
         if ack:
