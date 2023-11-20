@@ -53,5 +53,6 @@ database -open -shm -into waves.shm waves -default
 probe -create -database waves tb_i2c.clk tb_i2c.RST tb_i2c.SCL tb_i2c.SDA tb_i2c.u_i2c_master.RST tb_i2c.u_i2c_master.SCL tb_i2c.u_i2c_master.SDA tb_i2c.u_i2c_slave.LEDG tb_i2c.u_i2c_slave.LEDR tb_i2c.u_i2c_slave.RST tb_i2c.u_i2c_slave.SCL tb_i2c.u_i2c_slave.SDA tb_i2c.u_i2c_slave.SW_1 tb_i2c.u_i2c_slave.clk
 probe -create -database waves tb_i2c.clk tb_i2c.RST tb_i2c.SCL tb_i2c.SDA tb_i2c.u_i2c_master.RST tb_i2c.u_i2c_master.SCL tb_i2c.u_i2c_master.SDA tb_i2c.u_i2c_slave.LEDG tb_i2c.u_i2c_slave.LEDR tb_i2c.u_i2c_slave.RST tb_i2c.u_i2c_slave.SCL tb_i2c.u_i2c_slave.SDA tb_i2c.u_i2c_slave.SW_1 tb_i2c.u_i2c_slave.clk
 probe -create -database waves tb_i2c.u_i2c_slave.ack_bit tb_i2c.u_i2c_slave.address_detect tb_i2c.u_i2c_slave.bit_counter tb_i2c.u_i2c_slave.start_detect tb_i2c.u_i2c_slave.start_resetter tb_i2c.u_i2c_slave.start_rst tb_i2c.u_i2c_slave.stop_detect tb_i2c.u_i2c_slave.stop_resetter tb_i2c.u_i2c_slave.stop_rst
+probe -create -database waves tb_i2c.u_i2c_master.error_nack
 
 simvision -input restore_verilog_tb.tcl.svcf

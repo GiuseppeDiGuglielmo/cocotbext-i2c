@@ -5,3 +5,6 @@ waves.shm
 xrun.history
 xrun.key
 xrun.log
+sim_build
+xcelium.d
+*.svcf

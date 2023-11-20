@@ -72,7 +72,7 @@ module i2c_master(
             sda_out = data[7-i];
             #i2c_delay;
             scl_en = 1'b1;
-            #i2c_delay;
+            #(i2c_delay*2);
             scl_en = 1'b0;
             #i2c_delay;
         end
@@ -92,7 +92,7 @@ module i2c_master(
             $display("%0t i2c.master detect_ack NACK detected", $time());
             error_nack = 1'b1;
         end
-        #i2c_delay;
+        #(i2c_delay * 2);
         scl_en = 1'b0;
         $display("%0t i2c.master detect_ack ACK/NACK %0b", $time(), error_nack);
         $display("%0t i2c.master detect_ack end", $time());
@@ -181,7 +181,7 @@ module i2c_master(
         //    detect_ack();
         //end
         stop_bit();
-        gen_scl(3); //for detect the stop to idle
+        //gen_scl(1); //for detect the stop to idle
         //$display("%0t write Bytes=%d to Addr=%h", $time(), N, addr);
         //for(j = 0; j < 8; j++)
         //begin
@@ -270,7 +270,8 @@ module tb_i2c();
         #5;
         RST = 1'b0;
         #5;
-    u_i2c_master.i2c_write(SLAVE_ADDR, index, 1, data);
+
+        u_i2c_master.i2c_write(SLAVE_ADDR, index, 1, data);
 //  data={8'h5a};
     //  u_i2c.reg_01<=8'h5a;//to force the data
 //  u_i2c_master.i2c_read(slave_addr,index,1,recv);
@@ -286,7 +287,7 @@ module tb_i2c();
      u_i2c.reg_03<=8'h55;//to force the data
      u_i2c_master.i2c_read(slave_addr,index,2,recv);*/
 
-     #100;
+     #10;
      $display("%0t TB: done", $time());
      $finish();;
     end
