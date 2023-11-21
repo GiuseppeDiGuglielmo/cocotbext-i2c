@@ -27,7 +27,7 @@ COCOTB_HDL_TIMEUNIT = 1ns
 COCOTB_HDL_TIMEPRECISION = 1ns
 
 DUT      = i2c_slave
-TOPLEVEL = $(DUT)
+TOPLEVEL = $(DUT)_harness
 MODULE   = $(DUT)_tb
 VERILOG_SOURCES += $(DUT).v
 
@@ -48,7 +48,12 @@ endif
 
 # ------
 sim-rtl:
-	xrun -access +rwc -sv $(VERILOG_SOURCES) i2c_slave_tb.v -s -input restore_verilog_tb.tcl
+	xrun \
+		-top tb_i2c \
+		-access +rwc \
+		-sv $(VERILOG_SOURCES) i2c_slave_tb.v \
+		-s \
+		-input restore_verilog_tb.tcl
 .PHONY: sim-rtl
 # ------
 
@@ -71,3 +76,5 @@ ultraclean: clean
 	@rm -rf xrun.history
 	@rm -rf xrun.key
 	@rm -rf xrun.log
+	@rm -rf xcelium.d
+	@rm -rf .simvision

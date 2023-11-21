@@ -241,7 +241,13 @@ module tb_i2c();
     parameter [7:0] index = 8'h01;
     parameter READ = 1'b1, WRITE = 1'b0;
 
-    i2c_slave u_i2c_slave(
+    i2c_master u_i2c_master( // tb
+        .SCL(SCL),
+        .SDA(SDA),
+        .RST(RST)
+        );
+
+    i2c_slave u_i2c_slave( // dut
         .clk(clk),
         .SCL(SCL),
         .SDA(SDA),
@@ -249,11 +255,6 @@ module tb_i2c();
         .LEDG(LEDG),
         .LEDR(LEDR),
         .SW_1(SW_1)
-        );
-    i2c_master u_i2c_master(
-        .SCL(SCL),
-        .SDA(SDA),
-        .RST(RST)
         );
 
     always

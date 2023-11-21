@@ -27,6 +27,38 @@ STOP*/
 //-------------------------------------------------------
 //-------------------------------------------------------
 //-------------------------------------------------------
+
+module i2c_slave_harness(
+    clk,
+    SCL,
+    SDA,
+    RST,
+    LEDG,
+    LEDR,
+    SW_1
+    );
+ 
+    input SCL;
+    input RST;
+    input clk;
+    inout SDA;
+    input SW_1;
+    output [7:0] LEDG;
+    output [17:0] LEDR;
+
+    pullup(SDA);
+    pullup(SCL);
+
+    i2c_slave u_i2c_slave(
+        .clk(clk),
+        .SCL(SCL),
+        .SDA(SDA),
+        .RST(RST),
+        .LEDG(LEDG),
+        .LEDR(LEDR),
+        .SW_1(SW_1));
+endmodule
+
 module i2c_slave(
 clk,
 SCL,

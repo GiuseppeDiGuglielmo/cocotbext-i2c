@@ -18,7 +18,7 @@ class I2C_TB:
         self.log = logging.getLogger("cocotb.tb")
         self.log.setLevel(logging.DEBUG)
 
-        self.i2c_master = I2cMaster(sda=dut.SDA, scl=dut.SCL, speed=8000000)
+        self.i2c_master = I2cMaster(sda=dut.SDA, scl=dut.SCL, speed=100000000)
                  
 #        self.i2c_memory = I2cMemory(sda=dut.sda_2_o, sda_o=dut.sda_2_i,
 #            scl=dut.scl_2_o, scl_o=dut.scl_2_i, addr=0x50, size=256)
@@ -32,21 +32,20 @@ async def run_test(dut, payload_lengths=None, payload_data=None):
     dut.clk.value = 0
     dut.SW_1.value = 0
     
-    dut.RST.value = 1
-
-    await Timer(5, 'us')
-
     dut.RST.value = 0
-
-    await Timer(5, 'us')
+    await Timer(2, 'ns')
+    dut.RST.value = 1
+    await Timer(5, 'ns')
+    dut.RST.value = 0
+    await Timer(5, 'ns')
   
-    dev_addr = dut.device_address.value
-    reg_data = b'\xff\xff'
+    dev_addr = 0x55
+    reg_data = b'\x01'
 
     await tb.i2c_master.write(dev_addr, reg_data)
     await tb.i2c_master.send_stop()
 
-    await Timer(10, 'us')
+    await Timer(10, 'ns')
 #
 #    await tb.i2c_master.write(0x50, b'\x00')
 #    data = await tb.i2c_master.read(0x50, 4)
